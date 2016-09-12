@@ -1,7 +1,16 @@
-echo "Hi $USER"
+clear
+echo -e "\t\t\tHi $USER"
 echo -n "Enter the path to Analyse:"
 read path
 cd $path
+
+if (( !$? ))
+then
+echo -e "\t\t FileSystems:"
+space=$(df -h /)
+echo -e "\t$space"
+
+sleep 3
 totalfl=$(find . -name "*" | cat -n | tail -1 | cut -f1 | tr -d " " )
 dir=$(find . -type d | cat -n | tail -1 | cut -f1 | tr -d " " )
 imgs=$(find . -name "*.[jJ][pP][gG]" | cat -n | tail -1 | cut -f1 | tr -d " ")
@@ -55,3 +64,9 @@ echo -e "\tText files:	$txt\t$txtper% \n"
 echo -e "\timage files:	$imgs\t$imgper% \n"
 echo -e "\tMusic files:	$mp\t$mpper% \n"
 echo -e "\tVideo files:	$mpf\t$mpfper% \n"
+else
+clear
+echo "INVALID PATH: $path"
+sleep 2
+./diskScan.sh
+fi
