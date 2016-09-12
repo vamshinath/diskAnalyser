@@ -6,12 +6,16 @@ cd $path
 
 if (( !$? ))
 then
-space=$(du -h $path | tail -1 | cut -f1 -d" ")
+space=$(du -h $path | tail -1 | tr "\t" " " | cut -f1 -d" ")
 
 clear
-echo -e "$space"
-sleep 3
 totalfl=$(find . -name "*"  | cat -n | tail -1 | cut -f1 | tr -d " " )
+totalfl=$(( totalfl-1 ))
+if (( !totalfl ))
+then
+echo "$path is Empty"
+exit 0
+fi
 dir=$(find . -type d | cat -n | tail -1 | cut -f1 | tr -d " " )
 imgs=$(find . -type f \( -iname "*.jpg" -or -iname "*.jpeg" -or -iname "*.png" \) | cat -n | tail -1 | cut -f1 | tr -d " ")
 imgper=$((imgs*100/totalfl))
@@ -38,27 +42,30 @@ txt=$(find . -name "*.[tT][xX][tT]" | cat -n | tail -1 | cut -f1 | tr -d " ")
 txtper=$((txt*100/totalfl))
 
 clear
-echo -n ".."
+echo -e -n "\t.."
 sleep 0.5
-echo -n ".."
+echo -e -n ".."
 sleep 0.5
 echo -n ".."
 echo -n -e "\tAnalysing"
 sleep 1
-echo -n ".."
+echo -n -e "\t.."
 sleep 0.5
 echo -n ".."
 sleep 0.5
 echo -n ".."
+clear
 
- dirper=$((dir*100/totalfl))
-echo -e "\n\tTotal files in $path  :	$totalfl"
-echo -e "\n\tTotal directories in $path :	$dir    $dirper%"
-echo -e "\n\tProgram files:	$java\t$javaper% \n"
-echo -e "\tText files:	$txt\t$txtper% \n"
-echo -e "\timage files:	$imgs\t$imgper% \n"
-echo -e "\tMusic files:	$mp\t$mpper% \n"
-echo -e "\tVideo files:	$mpf\t$mpfper% \n"
+echo -e "\n\tTotal disk Utilized by $path :$space"
+
+dirper=$((dir*100/totalfl))
+echo -e "\n\tTotal files in $path	:	$totalfl"
+echo -e "\n\tTotal directories in $path	:	$dirper%"
+echo -e "\n\tProgram files	:	$java\t$javaper% \n"
+echo -e "\tText files	:	$txt\t$txtper% \n"
+echo -e "\timage files	:	$imgs\t$imgper% \n"
+echo -e "\tMusic files	:	$mp\t$mpper% \n"
+echo -e "\tVideo files	:	$mpf\t$mpfper% \n"
 else
 clear
 echo "INVALID PATH: $path"
