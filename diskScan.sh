@@ -6,17 +6,14 @@ cd $path
 
 if (( !$? ))
 then
-echo -e "\t\t FileSystems:"
-space=$(df -h /)
-echo -e "\t$space"
+space=$(du -h $path | tail -1 | cut -f1 -d" ")
 
+clear
+echo -e "$space"
 sleep 3
-totalfl=$(find . -name "*" | cat -n | tail -1 | cut -f1 | tr -d " " )
+totalfl=$(find . -name "*"  | cat -n | tail -1 | cut -f1 | tr -d " " )
 dir=$(find . -type d | cat -n | tail -1 | cut -f1 | tr -d " " )
-imgs=$(find . -name "*.[jJ][pP][gG]" | cat -n | tail -1 | cut -f1 | tr -d " ")
-png=$(find . -name "*.[pP][nN][gG]" | cat -n | tail -1 | cut -f1 | tr -d " ")
-jpeg=$(find . -name "*.[jJ][pP][eE][gG]" | cat -n | tail -1 | cut -f1 | tr -d " ")
-(( imgs=imgs+png+jpeg ))
+imgs=$(find . -type f \( -iname "*.jpg" -or -iname "*.jpeg" -or -iname "*.png" \) | cat -n | tail -1 | cut -f1 | tr -d " ")
 imgper=$((imgs*100/totalfl))
 
 
@@ -25,11 +22,7 @@ mp=$(find . -name "*.[mM][pP]3" | cat -n | tail -1 | cut -f1 | tr -d " ")
 mpper=$((mp*100/totalfl))
 
 
-mpf=$(find . -name "*.[mM][pP]4" | cat -n | tail -1 | cut -f1 | tr -d " ")
-tgp=$(find . -name "*.3[gG][pP]" | cat -n | tail -1 | cut -f1 | tr -d " ")
-avi=$(find . -name "*.[aA][vV][iI]" | cat -n | tail -1 | cut -f1 | tr -d " ")
-flv=$(find . -name "*.[fF][lL][vV]" | cat -n | tail -1 | cut -f1 | tr -d " ")
-((mpf=mpf+tgp+avi+flv))
+mpf=$(find . -type f \( -iname "*.flv" -or -iname "*.mp4" -or -iname "*.mkv" \) | cat -n | tail -1 | cut -f1 | tr -d " ")
 mpfper=$((mpf*100/totalfl))
 
 cpp=$(find . -name "*.[cC][pP][pP]" | cat -n | tail -1 | cut -f1 | tr -d " ")
@@ -37,7 +30,10 @@ cpper=$((cpp*100/totalfl))
 
 c=$(find . -name "*.[cC]" | cat -n | tail -1 | cut -f1 | tr -d " ")
 cper=$((c*100/totalfl))
-
+java=$(find . -type f \( -iname "*.jar" -or -iname "*.java" -or -iname "*.class" \) | cat -n | tail -1 | cut -f1 | tr -d " ")
+javaper=$(( java*100/totalfl ))
+pgfl=$(( c+cpp+java ))
+pgfl=$(( cper+cpper+javaper ))
 txt=$(find . -name "*.[tT][xX][tT]" | cat -n | tail -1 | cut -f1 | tr -d " ")
 txtper=$((txt*100/totalfl))
 
@@ -56,10 +52,9 @@ sleep 0.5
 echo -n ".."
 
  dirper=$((dir*100/totalfl))
-echo -e "\n\tTotal files in $path :	$totalfl"
+echo -e "\n\tTotal files in $path  :	$totalfl"
 echo -e "\n\tTotal directories in $path :	$dir    $dirper%"
-echo -e "\n\tC files:	$c\t$cper% \n"
-echo -e "\tCPP files:	$cpp\t$cpper% \n"
+echo -e "\n\tProgram files:	$java\t$javaper% \n"
 echo -e "\tText files:	$txt\t$txtper% \n"
 echo -e "\timage files:	$imgs\t$imgper% \n"
 echo -e "\tMusic files:	$mp\t$mpper% \n"
