@@ -1,3 +1,4 @@
+IFS=$'\n'
 clear
 echo -e "\t\t\tHi $USER"
 echo -n "Enter the path to Analyse:"
@@ -8,7 +9,7 @@ if (( !$? ))
 then
 touch /home/$USER/.Xctf.txt
 space=$(du -h $path | tail -1 | tr "\t" " " | cut -f1 -d" ")
-pspace=$(du $path | tail -1 | tr "\t" " " | cut -f1 -d" ")
+tspace=$(du $path | tail -1 | tr "\t" " " | cut -f1 -d" ")
 clear
 totalfl=$(find . -name "*"  | cat -n | tail -1 | cut -f1 | tr -d " " )
 totalfl=$(( totalfl-1 ))
@@ -19,7 +20,6 @@ exit 0
 fi
 dir=$(find . -type d | cat -n | tail -1 | cut -f1 | tr -d " " )
 imgs=$(find . -type f \( -iname "*.jpg" -or -iname "*.jpeg" -or -iname "*.png" \) | cat -n | tail -1 | cut -f1 | tr -d " ")
-imgper=$((imgs*100/totalfl))
 rm /home/$USER/.Xctf.txt
 find . -type f \( -iname "*.jpg" -or -iname "*.jpeg" -or -iname "*.png" \)  -printf "%s\n" > /home/$USER/.Xctf.txt
 for i in $(cat /home/$USER/.Xctf.txt)
@@ -28,10 +28,9 @@ imp=$(( imp+i ))
 done
 imgg=$(( imp/1000000))
 imp=0
-
+imgp=$(( impg*100/tspace))
 rm /home/$USER/.Xctf.txt
 mp=$(find . -name "*.[mM][pP]3" | cat -n | tail -1 | cut -f1 | tr -d " ")
-mpper=$((mp*100/totalfl))
 
 find . -type f \( -iname "*.mp3" \)  -printf "%s\n" > /home/$USER/.Xctf.txt
 for i in $(cat /home/$USER/.Xctf.txt)
@@ -40,12 +39,22 @@ imp=$(( imp+i ))
 done
 mp3g=$(( imp/1000000))
 imp=0
+mp3p=$((mp3g*100/tspace))
+
+
+
+fld=$(find . -maxdepth 2  -type d | cat -n | tr -d " " | cut -f1 -d"/" | tail -1)
+
+for dr in $(find . -maxdepth 2  -type d | head -$fld | tail -$(( fld -1 )) )
+do
+echo $dr
+sleep 2
+done
 
 
 
 rm /home/$USER/.Xctf.txt
 mpf=$(find . -type f \( -iname "*.flv" -or -iname "*.mp4" -or -iname "*.mkv" \) | cat -n | tail -1 | cut -f1 | tr -d " ")
-mpfper=$((mpf*100/totalfl))
 
 find . -type f \( -iname "*.flv" -or -iname "*.mp4" -or -iname "*.mkv" \)  -printf "%s\n" > /home/$USER/.Xctf.txt
 for i in $(cat /home/$USER/.Xctf.txt)
@@ -54,6 +63,7 @@ imp=$(( imp+i ))
 done
 mp4g=$(( imp/1000000))
 imp=0
+mp4p=$(( mp4g*100/tspace))
 
 rm /home/$USER/.Xctf.txt
 #cpp=$(find . -name "*.[cC][pP][pP]" | cat -n | tail -1 | cut -f1 | tr -d " ")
@@ -93,10 +103,10 @@ dirper=$((dir*100/totalfl))
 echo -e "\n\tTotal files	:	$totalfl\t\t MEGABYTES"
 echo -e "\n\tTotal dirs	:	$dirper%\n"
 #echo -e "\n\tProgram files	:	$pgfl\t$pp%\t$pgg \n"
-#echo -e "\tText files	:	$txt\t$txtper%\t$txtg \n"
-echo -e "\timage files	:	$imgs\t$imgper%\t$imgg \n"
-echo -e "\tMusic files	:	$mp\t$mpper%\t$mp3g \n"
-echo -e "\tVideo files	:	$mpf\t$mpfper%\t$mp4g \n"
+#echo -e "\tText files	:	$txt\t$txtpe%\t$txtg \n"
+echo -e "\timage files	:	$imgs\t$imgp%\t$imgg \n"
+echo -e "\tMusic files	:	$mp\t$mp3p%\t$mp3g \n"
+echo -e "\tVideo files	:	$mpf\t$mp4p%\t$mp4g \n"
 else
 clear
 echo "INVALID PATH: $path"
