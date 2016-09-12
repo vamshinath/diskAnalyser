@@ -96,7 +96,7 @@ sleep 0.5
 echo -n ".."
 clear
 
-echo -e "\n\tTotal disk Utilized by $path :$space($tspace)"
+echo -e "\n\tTotal disk Utilized by $path :$space"
 
 dirper=$((dir*100/totalfl))
 echo -e "\n\tTotal files	:	$totalfl\t\t MEGABYTES"
