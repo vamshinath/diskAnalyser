@@ -20,15 +20,23 @@ exit 0
 fi
 dir=$(find . -type d | cat -n | tail -1 | cut -f1 | tr -d " " )
 imgs=$(find . -type f \( -iname "*.jpg" -or -iname "*.jpeg" -or -iname "*.png" \) | cat -n | tail -1 | cut -f1 | tr -d " ")
+find . -type f \( -iname "*" \)  -printf "%s\n" > /home/$USER/.Xctf.txt
+for i in $(cat /home/$USER/.Xctf.txt)
+do
+imp=$(( imp+i ))
+done
+tspace=$(( imp/1000))
+imp=0
 rm /home/$USER/.Xctf.txt
 find . -type f \( -iname "*.jpg" -or -iname "*.jpeg" -or -iname "*.png" \)  -printf "%s\n" > /home/$USER/.Xctf.txt
 for i in $(cat /home/$USER/.Xctf.txt)
 do
 imp=$(( imp+i ))
 done
+imgp=$(( imp/(tspace*10)))
 imgg=$(( imp/1000000))
 imp=0
-imgp=$(( impg*100/tspace))
+
 rm /home/$USER/.Xctf.txt
 mp=$(find . -name "*.[mM][pP]3" | cat -n | tail -1 | cut -f1 | tr -d " ")
 
@@ -37,19 +45,9 @@ for i in $(cat /home/$USER/.Xctf.txt)
 do
 imp=$(( imp+i ))
 done
+mp3p=$((imp/(tspace*10)))
 mp3g=$(( imp/1000000))
 imp=0
-mp3p=$((mp3g*100/tspace))
-
-
-
-fld=$(find . -maxdepth 2  -type d | cat -n | tr -d " " | cut -f1 -d"/" | tail -1)
-
-for dr in $(find . -maxdepth 2  -type d | head -$fld | tail -$(( fld -1 )) )
-do
-echo $dr
-sleep 2
-done
 
 
 
@@ -61,9 +59,10 @@ for i in $(cat /home/$USER/.Xctf.txt)
 do
 imp=$(( imp+i ))
 done
+mp4p=$(( imp/(tspace*10)))
 mp4g=$(( imp/1000000))
 imp=0
-mp4p=$(( mp4g*100/tspace))
+
 
 rm /home/$USER/.Xctf.txt
 #cpp=$(find . -name "*.[cC][pP][pP]" | cat -n | tail -1 | cut -f1 | tr -d " ")
@@ -97,7 +96,7 @@ sleep 0.5
 echo -n ".."
 clear
 
-echo -e "\n\tTotal disk Utilized by $path :$space"
+echo -e "\n\tTotal disk Utilized by $path :$space($tspace)"
 
 dirper=$((dir*100/totalfl))
 echo -e "\n\tTotal files	:	$totalfl\t\t MEGABYTES"
@@ -111,5 +110,5 @@ else
 clear
 echo "INVALID PATH: $path"
 sleep 2
-./diskScan.sh
+/home/apple/diskScan.sh
 fi
