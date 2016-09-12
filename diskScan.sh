@@ -37,10 +37,15 @@ cper=$((c*100/totalfl))
 java=$(find . -type f \( -iname "*.jar" -or -iname "*.java" -or -iname "*.class" \) | cat -n | tail -1 | cut -f1 | tr -d " ")
 javaper=$(( java*100/totalfl ))
 pgfl=$(( c+cpp+java ))
-pgfl=$(( cper+cpper+javaper ))
+pp=$(( pgfl*100/totalfl ))
 txt=$(find . -name "*.[tT][xX][tT]" | cat -n | tail -1 | cut -f1 | tr -d " ")
 txtper=$((txt*100/totalfl))
-
+pspace=$(du $path | tail -1 | tr "\t" " " | cut -f1 -d" ")
+pgg=$(( (pgfl*pspace)/(totalfl*1000) ))
+txtg=$(( (txt*pspace)/(totalfl*1000) ))
+imgg=$(( (imgs*pspace)/(totalfl*1000) ))
+mp3g=$(( (mp*pspace)/(totalfl*1000) ))
+mpfg=$(( (mpf*pspace)/(totalfl*1000) ))
 clear
 echo -e -n "\t.."
 sleep 0.5
@@ -59,13 +64,13 @@ clear
 echo -e "\n\tTotal disk Utilized by $path :$space"
 
 dirper=$((dir*100/totalfl))
-echo -e "\n\tTotal files in $path	:	$totalfl"
-echo -e "\n\tTotal directories in $path	:	$dirper%"
-echo -e "\n\tProgram files	:	$java\t$javaper% \n"
-echo -e "\tText files	:	$txt\t$txtper% \n"
-echo -e "\timage files	:	$imgs\t$imgper% \n"
-echo -e "\tMusic files	:	$mp\t$mpper% \n"
-echo -e "\tVideo files	:	$mpf\t$mpfper% \n"
+echo -e "\n\tTotal files	:	$totalfl\tIN MEGABYTES"
+echo -e "\n\tTotal dirs	:	$dirper%"
+echo -e "\n\tProgram files	:	$pgfl\t$pp%\t$pgg \n"
+echo -e "\tText files	:	$txt\t$txtper%\t$txtg \n"
+echo -e "\timage files	:	$imgs\t$imgper%\t$imgg \n"
+echo -e "\tMusic files	:	$mp\t$mpper%\t$mp3g \n"
+echo -e "\tVideo files	:	$mpf\t$mpfper%\t$mpfg \n"
 else
 clear
 echo "INVALID PATH: $path"
