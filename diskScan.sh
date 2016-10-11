@@ -112,3 +112,4 @@ echo "INVALID PATH: $path"
 sleep 2
 /home/apple/diskScan.sh
 fi
+#done
